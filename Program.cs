@@ -53,6 +53,12 @@ app.UseSwaggerUI(options =>
 
 app.UseCors();
 
+app.MapGet("/products", async (AppDbContext db) =>
+{
+    return await db.Products.ToListAsync();
+});
+
+
 // Root health check
 app.MapGet("/", () => "API is running! Visit /swagger for documentation.");
 
@@ -60,7 +66,4 @@ app.MapControllers();
 
 app.Run();
 
-app.MapGet("/products", async (AppDbContext db) =>
-{
-    return await db.Products.ToListAsync();
-});
+
