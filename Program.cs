@@ -8,9 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Enable OpenAPI documentation (Microsoft standard)
-builder.Services.AddOpenApi();
-
 // Enable Swashbuckle Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -50,14 +47,11 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseForwardedHeaders();
 
-// MapOpenApi provides the /openapi/v1.json endpoint
-app.MapOpenApi();
-
 // Enable Swagger UI at /swagger
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
-    options.SwaggerEndpoint("/openapi/v1.json", "v1");
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
     options.RoutePrefix = "swagger";
 });
 
