@@ -60,4 +60,7 @@ app.MapControllers();
 
 app.Run();
 
-
+app.MapGet("/products", async (AppDbContext db) =>
+{
+    return await db.Products.ToListAsync();
+});
