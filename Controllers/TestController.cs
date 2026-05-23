@@ -19,4 +19,10 @@ public class TestController : ControllerBase
     {
         return Ok(_context.Students.ToList());
     }
+
+    [HttpGet("ping")]
+    public IActionResult Ping()
+    {
+        return Ok(new { message = "Pong! API is reachable.", timestamp = DateTime.UtcNow });
+    }
 }

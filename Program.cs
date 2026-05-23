@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Backend_dotNet.Models;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -14,9 +15,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<TestdbContext>(options =>
-    options.UseSqlServer(
+    options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    )
+);
+
 
 // Add CORS policy
 builder.Services.AddCors(options =>
@@ -45,6 +53,11 @@ app.UseSwaggerUI(options =>
 
 app.UseCors();
 
+// Root health check
+app.MapGet("/", () => "API is running! Visit /swagger for documentation.");
+
 app.MapControllers();
 
 app.Run();
+
+
