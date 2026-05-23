@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Backend_dotNet.Models;
+using Microsoft.AspNetCore.HttpOverrides;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,13 @@ builder.Services.AddOpenApi();
 // Enable Swashbuckle Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.KnownIPNetworks.Clear();
+    options.KnownProxies.Clear();
+});
 
 builder.Services.AddDbContext<TestdbContext>(options =>
     options.UseNpgsql(
@@ -40,6 +48,8 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseForwardedHeaders();
+
 // MapOpenApi provides the /openapi/v1.json endpoint
 app.MapOpenApi();
 
